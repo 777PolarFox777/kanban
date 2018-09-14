@@ -5,5 +5,33 @@
   "dependencies": {
     "react": "^16.5.0",
     "react-dom": "^16.5.0"
-  }
+  },
+  "description": "Small kanban board app powered by react",
+  "main": "index.js",
+  "devDependencies": {
+    "@babel/core": "^7.0.1",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "webpack": "^4.19.0",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "watch": "webpack --watch --mode development",
+    "start": "webpack-dev-server --open --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/777PolarFox777/kanban.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/777PolarFox777/kanban/issues"
+  },
+  "homepage": "https://github.com/777PolarFox777/kanban#readme"
 }
