@@ -1,48 +1,44 @@
-/**
- * Created by Andrew on 14.09.2018.
- */
-var webpack = require('webpack');
+const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== 'production'
 
-/*
- * Default webpack configuration for development
- */
-var config = {
-    devtool: 'eval-source-map',
-    entry:  __dirname + "/source/App.js",
+
+module.exports = {
+    entry: [
+        './source/App.js',
+    ],
     output: {
-        path: __dirname + "/public",
-        filename: "bundle.js"
+        filename: './bundle.js'
     },
+    devtool: "source-map",
     module: {
-        loaders: [{
-            test: /\.jsx?$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['env','react']
+        rules: [
+            {
+            test: /\.js$/,
+            include: path.resolve(__dirname, 'source/'),
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@babel/preset-env', '@babel/preset-react']
+                }
             }
-        }]
+            },
+            {
+                test: /\.(sa|sc|c)ss$/,
+                use: [
+                    devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader',
+                    ],
+            }
+        ]
     },
-    devServer: {
-        contentBase: "./public",
-        colors: true,
-        historyApiFallback: true,
-        inline: true
-    },
-};
-
-/*
- * If bundling for production, optimize output
- */
-if (process.env.NODE_ENV === 'production') {
-    config.devtool = false;
-    config.plugins = [
-        new webpack.optimize.OccurenceOrderPlugin(),
-        new webpack.optimize.UglifyJsPlugin({comments: false}),
-        new webpack.DefinePlugin({
-            'process.env': {NODE_ENV: JSON.stringify('production')}
+    plugins: [
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: 'style.css',
+            chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
         })
-    ];
-}
-
-module.exports = config;
+    ]
+};
