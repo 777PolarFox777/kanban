@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import marked from 'marked';
+import { Transition } from 'react-transition-group';
 import CheckList from './CheckList';
 import Tooltip from './Tooltip';
 
@@ -30,16 +31,6 @@ class Card extends Component {
       color,
       title,
     } = this.props;
-    let cardDetails;
-    if (showDetails) {
-      cardDetails = (
-        <div className="card__details">
-          {/* eslint-disable-next-line react/no-danger */}
-          <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
-          <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
-        </div>
-      );
-    }
     const sideColor = {
       position: 'absolute',
       zIndex: -1,
@@ -85,7 +76,46 @@ class Card extends Component {
             )
           }
         </div>
-        {cardDetails}
+        <Transition in={showDetails} timeout={500}>
+          {(state) => {
+            switch (state) {
+            case 'entering':
+              return (
+                <div className="card__details slider slider-opened">
+                  {/* eslint-disable-next-line react/no-danger */}
+                  <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
+                  <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
+                </div>
+              );
+            case 'entered':
+              return (
+                <div className="card__details slider slider-opened">
+                  {/* eslint-disable-next-line react/no-danger */}
+                  <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
+                  <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
+                </div>
+              );
+            case 'exiting':
+              return (
+                <div className="card__details slider slider-closed">
+                  {/* eslint-disable-next-line react/no-danger */}
+                  <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
+                  <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
+                </div>
+              );
+            case 'exited':
+              return (
+                <div className="card__details slider slider-closed">
+                  {/* eslint-disable-next-line react/no-danger */}
+                  <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
+                  <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
+                </div>
+              );
+            default:
+              return null;
+            }
+          }}
+        </Transition>
       </div>
     );
   }

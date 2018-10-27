@@ -10,7 +10,8 @@
     "prop-types": "^15.6.2",
     "react": "^16.5.0",
     "react-addons-update": "^15.6.2",
-    "react-dom": "^16.5.0"
+    "react-dom": "^16.5.0",
+    "react-transition-group": "^2.5.0"
   },
   "description": "Small kanban board app powered by react",
   "main": "index.js",

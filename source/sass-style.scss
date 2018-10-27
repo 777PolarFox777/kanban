@@ -356,7 +356,7 @@ ul {
     }
 }
 
-.invalid{
+.invalid {
     border: 1px solid red;
 }
 
@@ -369,4 +369,20 @@ ul {
         bottom: -1em;
         opacity: 0;
     }
+}
+.slider {
+  overflow: hidden;
+  -webkit-transition-property: all;
+  -webkit-transition-duration: 0.5s;
+  -webkit-transition-timing-function: ease-in-out;
+  -moz-transition-property: all;
+  -moz-transition-duration: 0.5s;
+  -moz-transition-timing-function: ease-in-out;
+}
+.slider-closed {
+  max-height: 0;
+}
+
+.slider-opened {
+  max-height: 500px;
 }
