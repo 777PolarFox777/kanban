@@ -10,8 +10,9 @@ class Modal extends Component {
   constructor(props) {
     super(props);
 
-    this.handleKeyUp = this.handleKeyUp.bind(this);
-    this.handleOutsideClick = this.handleOutsideClick.bind(this);
+    this.state = {
+
+    };
   }
 
   // Add listeners immediately after the component is mounted.
@@ -27,7 +28,7 @@ class Modal extends Component {
   }
 
   // Handle the key press event.
-  handleKeyUp(e) {
+  handleKeyUp = (e) => {
     const { onCloseRequest } = this.props;
     const keys = {
       27: () => {
@@ -38,10 +39,12 @@ class Modal extends Component {
     };
 
     if (keys[e.keyCode]) { keys[e.keyCode](); }
-  }
+  };
 
   // Handle the mouse click on browser window.
-  handleOutsideClick(e) {
+  handleOutsideClick = (e) => {
+    // need this to prevent closing modal if tutorial button was clicked
+    if (e.target.classList.contains('tutorial')) return;
     const { onCloseRequest } = this.props;
 
     if (this.modal !== undefined && this.modal !== null) {
@@ -50,7 +53,7 @@ class Modal extends Component {
         document.removeEventListener('click', this.handleOutsideClick, false);
       }
     }
-  }
+  };
 
   // Render the component passing onCloseRequest and children as props.
   render() {

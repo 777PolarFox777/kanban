@@ -16,10 +16,10 @@ class Card extends Component {
     };
   }
 
-  toggleDetails() {
+  toggleDetails =() => {
     const { showDetails } = this.state;
     this.setState({ showDetails: !showDetails });
-  }
+  };
 
   render() {
     const { showDetails } = this.state;
@@ -44,14 +44,54 @@ class Card extends Component {
     return (
       <div className="card">
         <div style={sideColor} />
-        <div // eslint-disable-line jsx-a11y/interactive-supports-focus
-          role="button"
+        <div
           className={
             showDetails ? 'card__title card__title--is-open' : 'card__title'
           }
-          onClick={this.toggleDetails.bind(this)}
         >
-          {title}
+          <div // eslint-disable-line jsx-a11y/interactive-supports-focus
+            role="button"
+            className="card_button"
+            onClick={this.toggleDetails}
+          />
+          <div
+            className="title_container"
+            style={{ display: 'inline' }}
+            onDoubleClick={(ev) => {
+              if (ev.target.localName !== 'input') {
+                const input = document.createElement('input');
+                input.value = title;
+                input.style.width = '150px';
+                input.style.fontWeight = 'bold';
+                input.style.fontSize = '18px';
+                input.onblur = (evb) => {
+                  const div = document.createElement('div');
+                  div.innerHTML = evb.currentTarget.value;
+                  div.style.width = '150px';
+                  div.style.display = 'inline';
+                  try {
+                    evb.currentTarget.parentNode.replaceChild(div, evb.currentTarget);
+                  } catch (e) {
+                    console.log(e); // eslint-disable-line no-console
+                  }
+                };
+                input.onkeypress = (evp) => {
+                  if (evp.key === 'Enter') {
+                    evp.preventDefault();
+                    evp.currentTarget.onblur(evp);
+                  }
+                };
+                ev.currentTarget.replaceChild(input, ev.currentTarget.children[0]);
+              }
+            }}
+          >
+            <div
+              style={{ display: 'inline' }}
+              className="title"
+            >
+              {title}
+            </div>
+          </div>
           {showDetails ? (
             <Tooltip label="Click here to delete this card!">
               <button

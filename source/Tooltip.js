@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 class Tooltip extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isVisible: false,
       timer: null,
@@ -15,7 +15,7 @@ class Tooltip extends Component {
     clearTimeout(timer);
   }
 
-  handleMouseEnter() {
+  handleMouseEnter = () => {
     const { delayTime } = this.props;
     this.setState({
       timer: setTimeout(() => {
@@ -24,15 +24,15 @@ class Tooltip extends Component {
         });
       }, delayTime),
     });
-  }
+  };
 
-  handleMouseLeave() {
+  handleMouseLeave = () => {
     const { timer } = this.state;
     clearTimeout(timer);
     this.setState({
       isVisible: false,
     });
-  }
+  };
 
   render() {
     let { isVisible } = this.state;
@@ -43,8 +43,8 @@ class Tooltip extends Component {
     return (
       <div
         className={className}
-        onMouseEnter={this.handleMouseEnter.bind(this)}
-        onMouseLeave={this.handleMouseLeave.bind(this)}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
       >
         <span className="tooltip-label">{label}</span>
         {children}

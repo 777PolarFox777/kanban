@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import update from 'react-addons-update';
 import KanbanBoard from './KanbanBoard';
 
-const API_URL = 'http:\\\\localhost:3000';
 const API_HEADERS = {
   'Content-Type': 'application/json',
   Authorization: 'any-string-you-like', // The Authorization is not needed for local server
@@ -16,23 +15,29 @@ class KanbanBoardContainer extends Component {
     super(props);
     this.state = {
       cards: [],
+      user: undefined,
     };
   }
 
   componentDidMount() {
-    fetch(`${API_URL}/cards`, { headers: API_HEADERS })
+    this.getCards();
+  }
+
+  getCards = () => {
+    fetch('/cards', { headers: API_HEADERS })
       .then(response => response.json())
       .then((responseData) => {
-        this.setState({ cards: responseData.cards });
+        this.setState({ cards: responseData.cards, user: responseData.user });
       })
       .catch((error) => {
         console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
+        this.setState({ cards: [], user: undefined });
       });
-  }
+  };
 
   // eslint-disable-next-line class-methods-use-this
-  fetchCards(nextState) {
-    fetch(`${API_URL}/changeCards`, {
+  fetchCards = (nextState) => {
+    fetch('/changeCards', {
       method: 'post',
       headers: API_HEADERS,
       body: JSON.stringify(nextState),
@@ -40,28 +45,42 @@ class KanbanBoardContainer extends Component {
       .catch((error) => {
         console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
       });
-  }
+  };
 
-  addTask(cardId, taskName) {
-    const { cards } = this.state;
+  addTask = (cardId, taskName) => {
+    const { cards, user } = this.state;
     // Find the index of the card
     const cardIndex = cards.findIndex(card => card.id === cardId);
     // Create a new task with the given name and a temporary ID
-    const newTask = { id: Date.now(), name: taskName, done: false };
-    // Create a new object and push the new task to the array of tasks
-    const nextState = update(cards, {
-      [cardIndex]: {
-        tasks: { $push: [newTask] },
-      },
-    });
-    // set the component state to the mutated object
-    this.setState({ cards: nextState });
-    // Call the API to add the task on the server
-    this.fetchCards(nextState);
-  }
+    const tempTask = {
+      id: 0, name: taskName, done: false,
+    };
 
-  deleteTask(cardId, taskId, taskIndex) {
-    const { cards } = this.state;
+    // Call the API to add the task on the server
+    fetch('/addTask', {
+      method: 'post',
+      headers: API_HEADERS,
+      body: JSON.stringify({ task: tempTask, cardId, user }),
+    })
+      .then(response => response.json())
+      .then((res) => {
+        const newTask = update(tempTask, { id: { $set: res.id } });
+        // Create a new object and push the new task to the array of tasks
+        const nextState = update(cards, {
+          [cardIndex]: {
+            tasks: { $push: [newTask] },
+          },
+        });
+        // set the component state to the mutated object
+        this.setState({ cards: nextState });
+      })
+      .catch((error) => {
+        console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
+      });
+  };
+
+  deleteTask = (cardId, taskId, taskIndex) => {
+    const { cards, user } = this.state;
     // Find the index of the card
     const cardIndex = cards.findIndex(card => card.id === cardId);
     // Create a new object without the task
@@ -73,15 +92,22 @@ class KanbanBoardContainer extends Component {
     // set the component state to the mutated object
     this.setState({ cards: nextState });
     // Call the API to remove the task on the server
-    this.fetchCards(nextState);
-  }
+    fetch('/deleteTask', {
+      method: 'post',
+      headers: API_HEADERS,
+      body: JSON.stringify({ taskId, user }),
+    })
+      .catch((error) => {
+        console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
+      });
+  };
 
-  toggleTask(cardId, taskId, taskIndex) {
+  toggleTask = (cardId, taskId, taskIndex) => {
     // Find the index of the card
-    const { cards } = this.state;
+    const { cards, user } = this.state;
     const cardIndex = cards.findIndex(card => card.id === cardId);
     // Save a reference to the task's 'done' value
-    let newDoneValue;
+    let newDoneValue = false;
     let status = 'todo';
     // Using the $apply command, you will change the done value to its opposite
     let nextState = update(cards, {
@@ -111,14 +137,6 @@ class KanbanBoardContainer extends Component {
         status: {
           $apply: () => status,
         },
-        color: {
-          $apply: () => {
-            if (Object.is(status, 'todo')) return '#a90a00';
-            if (Object.is(status, 'in-progress')) return '#BD8D31';
-            if (Object.is(status, 'done')) return '#3A7E28';
-            return '#FFFFFF';
-          },
-        },
         tasks: {
           [taskIndex]: {
             done: {
@@ -132,10 +150,19 @@ class KanbanBoardContainer extends Component {
     // set the component state to the mutated object
     this.setState({ cards: nextState });
     // Call the API to toggle the task on the server
-    this.fetchCards(nextState);
-  }
+    fetch('/toggleTask', {
+      method: 'post',
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        taskId, newDoneValue, status, cardId, user,
+      }),
+    })
+      .catch((error) => {
+        console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
+      });
+  };
 
-  createCard(title, desc, status) {
+  createCard = (title, desc, status) => {
     // Find the index of the card
     const { cards } = this.state;
     const cardId = cards.length + 1;
@@ -159,7 +186,7 @@ class KanbanBoardContainer extends Component {
     // set the component state to the mutated object
     this.setState({ cards: nextState });
     // Call the API to add the task on the server
-    fetch(`${API_URL}/changeCards`, {
+    fetch('/changeCards', {
       method: 'post',
       headers: API_HEADERS,
       body: JSON.stringify(nextState),
@@ -167,9 +194,9 @@ class KanbanBoardContainer extends Component {
       .catch((error) => {
         console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
       });
-  }
+  };
 
-  deleteCard(cardId) {
+  deleteCard = (cardId) => {
     const { cards } = this.state;
     // Find the index of the card
     const cardIndex = cards.findIndex(card => card.id === cardId);
@@ -181,20 +208,27 @@ class KanbanBoardContainer extends Component {
     this.setState({ cards: nextState });
     // Call the API to add the task on the server
     this.fetchCards(nextState);
-  }
+  };
+
+  changeUser = (newUser) => {
+    this.setState({ user: newUser });
+    this.getCards(newUser);
+  };
 
   render() {
-    const { cards } = this.state;
+    const { cards, user } = this.state;
     return (
       <KanbanBoard
         cards={cards}
         taskCallbacks={{
-          toggle: (cardId, taskId, taskIndex) => this.toggleTask(cardId, taskId, taskIndex),
-          delete: (cardId, taskId, taskIndex) => this.deleteTask(cardId, taskId, taskIndex),
-          add: (cardId, taskName) => this.addTask(cardId, taskName),
-          createCard: (title, desc, status) => this.createCard(title, desc, status),
-          deleteCard: cardId => this.deleteCard(cardId),
+          toggle: this.toggleTask,
+          delete: this.deleteTask,
+          add: this.addTask,
+          createCard: this.createCard,
+          deleteCard: this.deleteCard,
         }}
+        user={user}
+        changeUser={this.changeUser}
       />
     );
   }

@@ -11,17 +11,17 @@ class CheckList extends Component {
     this.state = { value: '' };
   }
 
-  handleChange(evt) {
+  handleChange = (evt) => {
     this.setState({ value: evt.target.value });
-  }
+  };
 
-  checkInputKeyPress(evt) {
+  checkInputKeyPress = (evt) => {
     const { cardId, taskCallbacks } = this.props;
     if (evt.key === 'Enter') {
       taskCallbacks.add(cardId, evt.target.value);
       this.setState({ value: '' });
     }
-  }
+  };
 
   render() {
     const { cardId, taskCallbacks } = this.props;
@@ -35,7 +35,7 @@ class CheckList extends Component {
             type="checkbox"
             id={`checkbox${cardId}${task.id}`}
             defaultChecked={task.done}
-            onChange={taskCallbacks.toggle.bind(null, cardId, task.id, taskIndex)}
+            onChange={() => taskCallbacks.toggle(cardId, task.id, taskIndex)}
           />
           <span className="checkmark" />
         </label>
@@ -43,9 +43,7 @@ class CheckList extends Component {
           <button
             type="button"
             className="checklist__task--remove cross"
-            onClick={
-              taskCallbacks.delete.bind(null, cardId, task.id, taskIndex)
-            }
+            onClick={() => taskCallbacks.delete(cardId, task.id, taskIndex)}
           />
         </Tooltip>
       </li>
@@ -58,8 +56,8 @@ class CheckList extends Component {
           type="text"
           className="checklist--add-task"
           placeholder="Type then hit Enter to add a task"
-          onChange={this.handleChange.bind(this)}
-          onKeyPress={this.checkInputKeyPress.bind(this)}
+          onChange={this.handleChange}
+          onKeyPress={this.checkInputKeyPress}
         />
       </div>
     );

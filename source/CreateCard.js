@@ -17,14 +17,14 @@ class CreateCard extends Component {
     this.handleButton = this.handleButton.bind(this);
   }
 
-  handleChange(ev) {
+  handleChange = (ev) => {
     const { name } = ev.target;
     this.setState({
       [name]: ev.target.value,
     });
-  }
+  };
 
-  handleButton(ev) {
+  handleButton = (ev) => {
     const { titleIn, descIn } = this.state;
     const { toggleModal } = this.props;
     ev.preventDefault();
@@ -35,7 +35,7 @@ class CreateCard extends Component {
       this.setState({ isValid: false });
       this.forceUpdate();
     }
-  }
+  };
 
   render() {
     const { isValid, titleIn, descIn } = this.state;

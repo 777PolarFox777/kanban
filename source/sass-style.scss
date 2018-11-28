@@ -1,116 +1,122 @@
 *{
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 html, body, #app {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 body {
-    background: #eee;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #eee;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 h1 {
-    font-weight: 200;
-    color: #3b414c;
-    font-size: 20px;
+  font-weight: 200;
+  color: #3b414c;
+  font-size: 20px;
 }
 ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 .app {
-    white-space: nowrap;
-    height: 100%;
+  white-space: nowrap;
+  height: 100%;
 }
 .list {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    white-space: normal;
-    height: 100%;
-    width: 33%;
-    padding: 0 20px;
-    overflow: auto;
-    &:not(:last-child):after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 1px;
-    height: 99%;
-    background: linear-gradient(to bottom, #eee 0%, #ccc 50%, #eee 100%) fixed;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  white-space: normal;
+  height: 100%;
+  width: 33%;
+  padding: 0 20px;
+  overflow: auto;
+  &:not(:last-child):after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 99%;
+  background: linear-gradient(to bottom, #eee 0%, #ccc 50%, #eee 100%) fixed;
 }
 }
 .card {
-    position: relative;
-    z-index: 1;
-    background: #fff;
-    width: 100%;
-    padding: 10px 10px 10px 15px;
-    margin: 0 0 10px 0;
-    overflow: auto;
-    border: 1px solid #e5e5df;
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  width: 100%;
+  padding: 10px 10px 10px 15px;
+  margin: 0 0 10px 0;
+  overflow: auto;
+  border: 1px solid #e5e5df;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 .card__title {
-    font-weight: bold;
-    border-bottom: solid 5px transparent;
-    &:before {
+  font-weight: bold;
+  border-bottom: solid 5px transparent;
+  .card_button {
+    width: 1em;
+    display: inline-block;
+  }
+  .card_button:before {
     display: inline-block;
     width: 1em;
     content: '►';
 }
 }
-.card__title--is-open:before {
+.card__title--is-open {
+  .card_button:before {
     content: '▼';
+  }
 }
 .checklist__task:first-child {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: dashed 1px #ddd;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: dashed 1px #ddd;
 }
 .checklist__task--remove:after{
-    display: inline-block;
-    color: #d66;
-    content: "+";
+  display: inline-block;
+  color: #d66;
+  content: "+";
 }
 .label-cbx {
-    user-select: none;
-    cursor: pointer;
-    margin-bottom: 0;
+  user-select: none;
+  cursor: pointer;
+  margin-bottom: 0;
 }
 .checklist__task .container{
-    overflow: hidden;
-    display: inline-block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    margin-right: 5px;
-    width: 250px;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    input{
+  overflow: hidden;
+  display: inline-block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  margin-right: 5px;
+  width: 250px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  input{
     position: absolute;
     opacity: 0;
     width: 0;
     cursor: pointer;
     &:checked ~ .checkmark {
-        background-color: #2196F3;
-        &:after {
+      background-color: #2196F3;
+      &:after {
         display: block;
-        }
+      }
     }
-    }
-    &:hover input ~ .checkmark {
+  }
+  &:hover input ~ .checkmark {
     background-color: #ccc;
-    }
-    & .checkmark:after {
+  }
+  & .checkmark:after {
     left: 6px;
     top: 3px;
     width: 5px;
@@ -120,41 +126,41 @@ ul {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-}
+  }
 }
 .checkmark{
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background-color: #eee;
-    &:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  &:after {
     content: "";
     position: absolute;
     display: none;
-    }
+  }
 }
 
 
 
 .cross {
-    display: block;
-    float:right;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 5px;
-    background: red;
-    height: 15px;
-    position: relative;
-    width: 5px;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-    &:after {
+  display: block;
+  float:right;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 5px;
+  background: red;
+  height: 15px;
+  position: relative;
+  width: 5px;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  &:after {
     background: red;
     content: "";
     height: 5px;
@@ -162,23 +168,23 @@ ul {
     position: absolute;
     top: 5px;
     width: 15px;
-    }
+  }
 }
 .plus {
-    display: block;
-    float:right;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 20px;
-    margin-top: 15px;
-    background: green;
-    height: 15px;
-    position: relative;
-    width: 5px;
-    &:after {
+  display: block;
+  float:right;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 20px;
+  margin-top: 15px;
+  background: green;
+  height: 15px;
+  position: relative;
+  width: 5px;
+  &:after {
     background: green;
     content: "";
     height: 5px;
@@ -186,54 +192,54 @@ ul {
     position: absolute;
     top: 5px;
     width: 15px;
-    }
+  }
 }
 
 
 .checklist--add-task {
-    border: 1px dashed #bbb;
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 3px;
+  border: 1px dashed #bbb;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 3px;
 }
 
 .modalOverlay {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    padding: 1rem;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-    opacity: 1;
-    overflow-x: hidden;
-    overflow-y: auto;
-    animation: show .5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 9999;
+  opacity: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  animation: show .5s ease;
 }
 
 .closeCross{
-    display: block;
-    float:right;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 15px;
-    margin-top: 3px;
-    background: red;
-    height: 35px;
-    position: relative;
-    width: 10px;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-    &:after{
+  display: block;
+  float:right;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding: 0;
+  margin-right: 15px;
+  margin-top: 3px;
+  background: red;
+  height: 35px;
+  position: relative;
+  width: 10px;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  &:after{
     background: red;
     content: "";
     height: 10px;
@@ -241,134 +247,131 @@ ul {
     position: absolute;
     top: 12px;
     width: 35px;
-    }
+  }
 }
 
 .closeButton{
-    position: fixed;
-    top: 0;
-    right: 0;
-    background: #fff;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0;
-    border: 0;
-    cursor: pointer;
-    outline: 0;
-    box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: #fff;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  outline: 0;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
 }
 
 .create-card{
-    display: block;
-    width: 400px;
-    height: 300px;
-    background-color: white;
-    padding-top: 20px;
+  display: block;
+  width: 400px;
+  height: 300px;
+  background-color: white;
+  padding-top: 20px;
 }
 
 .create-label{
-    display: block;
-    margin: 0 auto;
-    width: 300px;
+  display: block;
+  margin: 0 auto;
+  width: 300px;
 }
 
 .create-input{
-    width: 100%;
-    height: 20px;
+  width: 100%;
+  height: 20px;
 }
 
 .create-submit{
-    display: block;
-    margin: 20px auto 0;
-    width: 100px;
-    height: 50px;
-    border: 1px solid #c2c2c2;
-    background-color: white;
-    border-radius: 8px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    &:hover{
+  display: block;
+  margin: 20px auto 0;
+  width: 100px;
+  height: 50px;
+  border: 1px solid #c2c2c2;
+  background-color: white;
+  border-radius: 8px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  &:hover{
     background-color: #2196F3;
     color: white;
-}
+  }
 }
 
 .tooltip {
-    $transTime: 300ms;
-    position: relative;
-    display: inline-block;
-    min-width: 15px;
-    float: right;
+  $transTime: 300ms;
+  position: relative;
+  display: inline-block;
+  min-width: 15px;
+  z-index: 999;
+  float: right;
+  .tooltip-label {
+    position: absolute;
+    color: white;
+    font-weight: normal;
+    padding: .5em;
+    margin-bottom: 1em;
+    bottom: -110%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 12em;
+    border-radius: 2px;
+    background-color: #313131;
+    box-shadow: 0 3px 16px rgba(black, 0.15);
+    &:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: .4em solid transparent;
+      border-bottom-color: #313131;
+      left: 95%;
+      z-index: -1;
+      transform: translateX(-50%);
+      transition: top $transTime ease;
+    }
+  }
+  &.is-visible {
     .tooltip-label {
-        position: absolute;
-        color: white;
-        font-weight: normal;
-        padding: .5em;
-        margin-bottom: 1em;
-        bottom: -110%;
-        left: 50%;
-        transform: translateX(-50%);
-        min-width: 12em;
-        border-radius: 2px;
-        background-color: #313131;
-        box-shadow: 0 3px 16px rgba(black, 0.15);
-        &:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            border: .4em solid transparent;
-            border-bottom-color: #313131;
-            left: 95%;
-            z-index: -1;
-            transform: translateX(-50%);
-            transition: top $transTime ease;
-        }
+      display: block;
+      transform: translateY(100%) translateX(-95%);
+      opacity: 0.9;
+      z-index: 999;
+      visibility: visible;
+      transition: transform $transTime ease, opacity $transTime, visibility $transTime 0s;
+      &:after {
+        bottom: 100%;
+      }
     }
-    &.is-visible {
-        .tooltip-label {
-            display: block;
-            transform: translateY(100%) translateX(-95%);
-            opacity: 0.9;
-            z-index: 999;
-            visibility: visible;
-            transition: transform $transTime ease,
-                        opacity $transTime,
-                        visibility $transTime 0s;
-            &:after {
-                bottom: 100%;
-            }
-        }
+  }
+  &.is-hidden {
+    .tooltip-label {
+      display: none;
+      transform: translateY(100%) translateX(-50%);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform $transTime ease, opacity $transTime, visibility $transTime $transTime;
+      &:after {
+        bottom: 0;
+      }
     }
-    &.is-hidden {
-        .tooltip-label {
-            display: none;
-            transform: translateY(100%) translateX(-50%);
-            opacity: 0;
-            visibility: hidden;
-            transition: transform $transTime ease,
-                        opacity $transTime,
-                        visibility $transTime $transTime;
-            &:after {
-                bottom: 0;
-            }
-        }
-    }
+  }
 }
 
 .invalid {
-    border: 1px solid red;
+  border: 1px solid red;
 }
 
 @keyframes fade {
-    0% {
-        bottom: 0;
-        opacity: 1;
-    }
-    100% {
-        bottom: -1em;
-        opacity: 0;
-    }
+  0% {
+    bottom: 0;
+    opacity: 1;
+  }
+  100% {
+    bottom: -1em;
+    opacity: 0;
+  }
 }
 .slider {
   overflow: hidden;
@@ -385,4 +388,101 @@ ul {
 
 .slider-opened {
   max-height: 500px;
+}
+
+.intro{
+  display: block;
+  min-width: 400px;
+  min-height: 300px;
+  background-color: white;
+  padding: 20px;
+  text-align: center;
+
+  img{
+  border: 2px solid #2196F3;
+  }
+
+  .button-container{
+    display: flex;
+  }
+
+  .button{
+    display: block;
+    margin: 20px auto 0;
+    width: 100px;
+    height: 50px;
+    border: 1px solid #c2c2c2;
+    background-color: white;
+    border-radius: 8px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    &:hover{
+      background-color: #2196F3;
+      color: white;
+    }
+  }
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 15px;
+
+  h1{
+    font-weight: bolder;
+  }
+
+  .auth{
+    margin: auto 0;
+    display: flex;
+
+    *{
+      margin: 0 5px;
+    }
+
+    button{
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-color: rgba(0, 0, 0, 0);
+      border: none;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover{
+        color: #2196F3;
+        path{
+          fill: #2196F3;
+        }
+      }
+
+      svg{
+        margin: 0;
+      }
+    }
+  }
+}
+
+.loginForm{
+  min-width: 400px;
+  min-height: 300px;
+  background-color: white;
+  padding: 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .formContainer{
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .errorMessage{
+    color: red;
+  }
 }

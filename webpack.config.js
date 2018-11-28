@@ -1,9 +1,20 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-
 module.exports = {
-  target: 'node',
+  target: 'web',
+  devServer: {
+    open: 'Chrome',
+    proxy: [
+      {
+        path: '**',
+        target: 'http://localhost:3000',
+        secure: false,
+        changeOrigin: true,
+      },
+    ],
+    progress: true,
+  },
   node: {
     fs: 'empty',
     net: 'empty',
@@ -25,7 +36,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
+            presets: ['@babel/preset-env', '@babel/preset-react', { plugins: ['@babel/plugin-proposal-class-properties'] }],
           },
         },
       },
