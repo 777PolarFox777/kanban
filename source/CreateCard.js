@@ -45,13 +45,27 @@ class CreateCard extends Component {
         <label className="create-label" htmlFor="title-input">
           <h1>Input card title</h1>
           <br />
-          <input className={`create-input ${isValid ? '' : 'invalid'}`} name="titleIn" id="title-input" value={titleIn} onChange={this.handleChange} />
+          <input
+            className={`create-input ${isValid ? '' : 'invalid'}`}
+            name="titleIn"
+            id="title-input"
+            value={titleIn}
+            onChange={this.handleChange}
+            placeholder="Type card title here"
+          />
         </label>
 
         <label className="create-label" htmlFor="description-input">
           <h1>Input card description</h1>
           <br />
-          <input className={`create-input ${isValid ? '' : 'invalid'}`} name="descIn" id="description-input" value={descIn} onChange={this.handleChange} />
+          <input
+            className={`create-input ${isValid ? '' : 'invalid'}`}
+            name="descIn"
+            id="description-input"
+            value={descIn}
+            onChange={this.handleChange}
+            placeholder="Type card description here"
+          />
         </label>
 
         <button onClick={this.handleButton} className="create-submit" type="button">CREATE</button>

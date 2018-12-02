@@ -35,18 +35,6 @@ class KanbanBoardContainer extends Component {
       });
   };
 
-  // eslint-disable-next-line class-methods-use-this
-  fetchCards = (nextState) => {
-    fetch('/changeCards', {
-      method: 'post',
-      headers: API_HEADERS,
-      body: JSON.stringify(nextState),
-    })
-      .catch((error) => {
-        console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
-      });
-  };
-
   addTask = (cardId, taskName) => {
     const { cards, user } = this.state;
     // Find the index of the card
@@ -186,10 +174,16 @@ class KanbanBoardContainer extends Component {
     // set the component state to the mutated object
     this.setState({ cards: nextState });
     // Call the API to add the task on the server
-    fetch('/changeCards', {
+    fetch('/createCard', {
       method: 'post',
       headers: API_HEADERS,
-      body: JSON.stringify(nextState),
+      body: JSON.stringify({
+        card: {
+          title: newCard.title,
+          description: newCard.description,
+          status: newCard.status,
+        },
+      }),
     })
       .catch((error) => {
         console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
@@ -207,7 +201,14 @@ class KanbanBoardContainer extends Component {
     // set the component state to the mutated object
     this.setState({ cards: nextState });
     // Call the API to add the task on the server
-    this.fetchCards(nextState);
+    fetch('/deleteCard', {
+      method: 'post',
+      headers: API_HEADERS,
+      body: JSON.stringify({ cardId }),
+    })
+      .catch((error) => {
+        console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
+      });
   };
 
   changeUser = (newUser) => {

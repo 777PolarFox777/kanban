@@ -1,6 +1,7 @@
 const path = require('path');
 const mysqlx = require('@mysql/xdevapi');
 const passport = require('passport');
+const ensureLogin = require('connect-ensure-login');
 
 const baseDir = path.join(__dirname, '../../../');
 
@@ -24,6 +25,10 @@ const initRoutes = (app) => {
       })(req, res);
     });
 
+  app.get('/login', (req, res) => {
+    res.redirect('/');
+  });
+
   app.get('/logout',
     (req, res) => {
       req.logout();
@@ -34,7 +39,7 @@ const initRoutes = (app) => {
     res.sendFile(path.join(baseDir, 'index.html'));
   });
 
-  app.get('/cards', require('connect-ensure-login').ensureLoggedIn(), (req, res) => { // eslint-disable-line global-require
+  app.get('/cards', ensureLogin.ensureLoggedIn(), (req, res) => {
     const formedJson = [];
     const tasks = [];
     const { username } = req.user;
@@ -79,7 +84,59 @@ const initRoutes = (app) => {
       });
   });
 
-  app.post('/addTask', (req, res) => {
+  app.post('/createCard', ensureLogin.ensureLoggedIn(), (req, res) => {
+    let mysqlSession;
+    mysqlx
+      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .then((mySession) => {
+        mysqlSession = mySession;
+      })
+      .then(() => {
+        mysqlSession.sql(`USE ${process.env.DB_NAME}`).execute();
+        return mysqlSession.sql('SELECT id FROM users '
+        + `WHERE username = "${req.user.username}"`)
+          .execute((row) => {
+            [req.body.userId] = row;
+          });
+      })
+      .then(() => {
+        const { card } = req.body;
+        return mysqlSession.sql('INSERT INTO cards (id, title, description, status, user_id) '
+        + `VALUES (0, "${card.title}", "${card.description}", "${card.status}", ${req.body.userId})`)
+          .execute();
+      })
+      .then(() => mysqlSession.sql('SELECT id FROM cards ORDER BY id DESC LIMIT 1')
+        .execute((row) => {
+          [req.body.cardId] = row;
+        }))
+      .then(() => {
+        res.json({ id: req.body.cardId, ok: '200' });
+      })
+      .catch((err) => {
+        console.log(err); // eslint-disable-line no-console
+      });
+  });
+
+  app.post('/deleteCard', ensureLogin.ensureLoggedIn(), (req, res) => {
+    let mysqlSession;
+    mysqlx
+      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .then((mySession) => {
+        mysqlSession = mySession;
+      })
+      .then(() => mysqlSession.sql(`USE ${process.env.DB_NAME}`).execute())
+      .then(() => mysqlSession.sql('DELETE FROM cards '
+        + `WHERE id = "${req.body.cardId}"`)
+        .execute())
+      .then(() => {
+        res.json({ ok: '200' });
+      })
+      .catch((err) => {
+        console.log(err); // eslint-disable-line no-console
+      });
+  });
+
+  app.post('/addTask', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
       .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
@@ -90,20 +147,21 @@ const initRoutes = (app) => {
         mysqlSession.sql(`USE ${process.env.DB_NAME}`).execute();
         const { task } = req.body;
         mysqlSession.sql('INSERT INTO tasks (id, name, done, card_id) '
-        + `VALUES (${task.id}, "${task.name}", ${+task.done}, ${req.body.cardId})`)
+        + `VALUES (0, "${task.name}", ${+task.done}, ${req.body.cardId})`)
           .execute();
       })
       .then(() => {
-        mysqlSession.sql(`SELECT * FROM tasks WHERE name = "${req.body.task.name}"`).execute((row) => {
-          res.json({ id: row[0], ok: '200' });
-        });
+        mysqlSession.sql('SELECT id FROM tasks ORDER BY id DESC LIMIT 1')
+          .execute((row) => {
+            res.json({ id: row[0], ok: '200' });
+          });
       })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
       });
   });
 
-  app.post('/deleteTask', (req) => {
+  app.post('/deleteTask', ensureLogin.ensureLoggedIn(), (req) => {
     let mysqlSession;
     mysqlx
       .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
@@ -112,8 +170,8 @@ const initRoutes = (app) => {
       })
       .then(() => {
         mysqlSession.sql(`USE ${process.env.DB_NAME}`).execute();
-        mysqlSession.sql('DELETE FROM tasks WHERE '
-        + `id = ${req.body.taskId}`)
+        mysqlSession.sql('DELETE FROM tasks '
+        + `WHERE id = ${req.body.taskId}`)
           .execute();
       })
       .catch((err) => {
@@ -121,7 +179,7 @@ const initRoutes = (app) => {
       });
   });
 
-  app.post('/toggleTask', (req) => {
+  app.post('/toggleTask', ensureLogin.ensureLoggedIn(), (req) => {
     let mysqlSession;
     mysqlx
       .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
@@ -144,7 +202,7 @@ const initRoutes = (app) => {
       });
   });
 
-  app.get('/images/:name', (req, res) => {
+  app.get('/images/:name', ensureLogin.ensureLoggedIn(), (req, res) => {
     res.sendFile(path.join(baseDir, `/source/images/${req.params.name}`));
   });
 };
