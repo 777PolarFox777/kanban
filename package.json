@@ -9,6 +9,8 @@
     "body-parser": "^1.18.3",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",
+    "dotenv": "^6.1.0",
+    "eslint-plugin-css-modules": "^2.10.0",
     "express": "^4.16.3",
     "express-mysql-session": "^2.0.1",
     "express-session": "^1.15.6",
@@ -19,8 +21,7 @@
     "react": "^16.5.0",
     "react-addons-update": "^15.6.2",
     "react-dom": "^16.5.0",
-    "react-transition-group": "^2.5.0",
-    "dotenv": "^6.1.0"
+    "react-transition-group": "^2.5.0"
   },
   "description": "Small kanban board app powered by react",
   "main": "index.js",

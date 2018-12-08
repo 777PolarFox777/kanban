@@ -4,7 +4,12 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    "extends": ["eslint:recommended", "airbnb", "plugin:react/recommended"],
+    "extends": [
+      "eslint:recommended",
+      "airbnb",
+      "plugin:react/recommended",
+      "plugin:css-modules/recommended"
+    ],
     "parser": 'babel-eslint',
     "parserOptions": {
         "ecmaFeatures": {
@@ -13,7 +18,8 @@ module.exports = {
         "ecmaVersion": 2018
     },
     "plugins": [
-        "react"
+        "react",
+        "css-modules"
     ],
     "rules": {
         "indent": [
@@ -24,7 +30,7 @@ module.exports = {
         "jsx-a11y/click-events-have-key-events": "off",
         "linebreak-style": [
             "error",
-            "windows"
+            "unix"
         ],
         "quotes": [
             "error",
@@ -33,6 +39,8 @@ module.exports = {
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "css-modules/no-unused-class": [2, { "camelCase": "dashes-only" }],
+        "css-modules/no-undef-class": [2, { "camelCase": "dashes-only" }]
     }
 };

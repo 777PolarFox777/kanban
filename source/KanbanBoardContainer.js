@@ -185,6 +185,18 @@ class KanbanBoardContainer extends Component {
         },
       }),
     })
+      .then(response => response.json())
+      .then((res) => {
+        const cardIndex = nextState.findIndex(card => card.id === cardId);
+        // Create a new object and push the new task to the array of tasks
+        const nextStateWithId = update(nextState, {
+          [cardIndex]: {
+            id: { $set: res.id },
+          },
+        });
+        // set the component state to the mutated object
+        this.setState({ cards: nextStateWithId });
+      })
       .catch((error) => {
         console.log('Error fetching and parsing data', error); // eslint-disable-line no-console
       });

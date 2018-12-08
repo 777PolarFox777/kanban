@@ -63,22 +63,22 @@ class Modal extends Component {
     } = this.props;
 
     return (
-      <div className="modalOverlay">
+      <div className="modal-overlay">
         <div
           className="modal"
           ref={(node) => {
             this.modal = node;
           }}
         >
-          <div className="modalContent">
+          <div className="modal-content">
             {children}
           </div>
         </div>
 
-        <div className="closeButton">
+        <div className="close-button">
           <button
             type="button"
-            className="closeCross"
+            className="close-cross"
             onClick={(ev) => {
               ev.preventDefault();
               onCloseRequest();

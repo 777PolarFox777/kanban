@@ -8,6 +8,7 @@ import Modal from './Modal';
 import CreateCard from './CreateCard';
 import Tutorial from './Tutorial';
 import LoginForm from './LoginForm';
+import RegistrationForm from './RegistrationForm';
 
 const API_HEADERS = {
   'Content-Type': 'application/json',
@@ -22,6 +23,7 @@ class KanbanBoard extends Component {
       status: '',
       showTutorial: false,
       showLoginForm: false,
+      showRegisterForm: false,
       svgContent: null,
     };
   }
@@ -37,7 +39,9 @@ class KanbanBoard extends Component {
   };
 
   handleToggleModal = (modalEv) => {
-    const { showCreateCard, showTutorial, showLoginForm } = this.state;
+    const {
+      showCreateCard, showTutorial, showLoginForm, showRegisterForm,
+    } = this.state;
     if (modalEv) {
       if (modalEv.name === 'tutorial') {
         this.setState({ showTutorial: !showTutorial });
@@ -46,6 +50,10 @@ class KanbanBoard extends Component {
       if (modalEv.name === 'login') {
         this.setState({ showLoginForm: !showLoginForm });
         return;
+      }
+
+      if (modalEv.name === 'register') {
+        this.setState({ showRegisterForm: !showRegisterForm });
       }
 
       if (modalEv.name === 'createCard') {
@@ -67,7 +75,12 @@ class KanbanBoard extends Component {
 
   render() {
     const {
-      showCreateCard, status, showTutorial, showLoginForm, svgContent,
+      showCreateCard,
+      status,
+      showTutorial,
+      showLoginForm,
+      svgContent,
+      showRegisterForm,
     } = this.state;
     const {
       taskCallbacks, cards, user, changeUser,
@@ -90,7 +103,7 @@ class KanbanBoard extends Component {
                 <div className="login-filed">
                   <button type="button" onClick={() => this.handleToggleModal({ name: 'login' })}>Log in</button>
                   <span>|</span>
-                  <button type="button">Register</button>
+                  <button type="button" onClick={() => this.handleToggleModal({ name: 'register' })}>Register</button>
                 </div>
               )
             }
@@ -144,6 +157,13 @@ class KanbanBoard extends Component {
         && (
           <Modal onCloseRequest={() => this.handleToggleModal({ name: 'tutorial' })}>
             <Tutorial toggleModal={() => this.handleToggleModal({ name: 'tutorial' })} />
+          </Modal>
+        )
+        }
+        {showRegisterForm
+        && (
+          <Modal onCloseRequest={() => this.handleToggleModal({ name: 'register' })}>
+            <RegistrationForm toggleModal={() => this.handleToggleModal({ name: 'register' })} changeUser={changeUser} />
           </Modal>
         )
         }

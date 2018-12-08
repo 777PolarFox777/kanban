@@ -204,7 +204,7 @@ ul {
   border-radius: 3px;
 }
 
-.modalOverlay {
+.modal-overlay {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,7 +222,7 @@ ul {
   animation: show .5s ease;
 }
 
-.closeCross{
+.close-cross{
   display: block;
   float:right;
   border: none;
@@ -250,7 +250,7 @@ ul {
   }
 }
 
-.closeButton{
+.close-button{
   position: fixed;
   top: 0;
   right: 0;
@@ -470,7 +470,7 @@ ul {
   }
 }
 
-.loginForm{
+.registration-login-form{
   min-width: 400px;
   min-height: 300px;
   background-color: white;
@@ -480,14 +480,53 @@ ul {
   justify-content: center;
   flex-direction: column;
 
-  .formContainer{
-    height: 150px;
+  .form-container{
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    input{
+      width: 200px;
+      padding: 10px;
+      border: 1px dashed #bbb;
+      margin-top: 5px;
+      margin-left: 5px;
+      border-radius: 3px;
+      box-sizing: border-box;
+
+      &[type='submit']{
+        display: block;
+        margin: 20px auto 0;
+        width: 100px;
+        height: 50px;
+        border: 1px solid #c2c2c2;
+        background-color: white;
+        border-radius: 8px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        &:hover{
+          background-color: #2196F3;
+          color: white;
+        }
+      }
+    }
+
+    .invalid{
+      border: 1px solid #aa0d10;
+      background-color: white;
+    }
   }
 
-  .errorMessage{
-    color: red;
+  .error-message{
+    color: #aa0d10;
+    font-weight: bolder;
+  }
+
+  .registration label{
+    align-self: flex-end;
   }
 }
+
+
+

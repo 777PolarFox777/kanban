@@ -2,6 +2,7 @@ const path = require('path');
 const mysqlx = require('@mysql/xdevapi');
 const passport = require('passport');
 const ensureLogin = require('connect-ensure-login');
+const bcrypt = require('bcrypt');
 
 const baseDir = path.join(__dirname, '../../../');
 
@@ -13,7 +14,7 @@ const initRoutes = (app) => {
           return res.json({ error: err });
         }
         if (!user) {
-          return res.json({ error: 'No such user' });
+          return res.json({ error: 'No such user!' });
         }
         req.logIn(user, (errc) => {
           if (errc) {
@@ -34,6 +35,30 @@ const initRoutes = (app) => {
       req.logout();
       res.status(401).send('logged out');
     });
+
+  app.post('/register', (req, res) => {
+    let mysqlSession;
+    // Generate Password
+    const saltRounds = 10;
+    const myPlaintextPassword = req.body.password;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    const passwordHash = bcrypt.hashSync(myPlaintextPassword, salt);
+    mysqlx
+      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .then((mySession) => {
+        mysqlSession = mySession;
+      })
+      .then(() => mysqlSession.sql(`USE ${process.env.DB_NAME}`).execute())
+      .then(() => mysqlSession.sql('INSERT INTO users (id, username, password) '
+        + `VALUES (0, "${req.body.username}", "${passwordHash}")`)
+        .execute())
+      .then(() => {
+        res.json({ ok: '200' });
+      })
+      .catch((err) => {
+        console.log(err); // eslint-disable-line no-console
+      });
+  });
 
   app.get('/', (req, res) => {
     res.sendFile(path.join(baseDir, 'index.html'));
@@ -204,6 +229,14 @@ const initRoutes = (app) => {
 
   app.get('/images/:name', ensureLogin.ensureLoggedIn(), (req, res) => {
     res.sendFile(path.join(baseDir, `/source/images/${req.params.name}`));
+  });
+
+  app.get('/docs', (req, res) => {
+    res.sendFile(path.join(baseDir, '/docs.html'));
+  });
+
+  app.get('/docs-style.css', (req, res) => {
+    res.sendFile(path.join(baseDir, '/docs-style.css'));
   });
 };
 
