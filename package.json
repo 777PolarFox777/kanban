@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/polyfill": "^7.0.0",
     "@mysql/xdevapi": "^8.0.12",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
@@ -21,7 +22,10 @@
     "react": "^16.5.0",
     "react-addons-update": "^15.6.2",
     "react-dom": "^16.5.0",
-    "react-transition-group": "^2.5.0"
+    "react-redux": "^6.0.0",
+    "react-transition-group": "^2.5.0",
+    "redux": "^4.0.1",
+    "redux-saga": "^0.16.2"
   },
   "description": "Small kanban board app powered by react",
   "main": "index.js",

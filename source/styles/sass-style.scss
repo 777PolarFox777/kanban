@@ -56,6 +56,8 @@ ul {
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 .card__title {
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
   border-bottom: solid 5px transparent;
   .card_button {
@@ -78,6 +80,11 @@ ul {
   padding-top: 10px;
   border-top: dashed 1px #ddd;
 }
+
+.checklist__task {
+  display: flex;
+}
+
 .checklist__task--remove:after{
   display: inline-block;
   color: #d66;
@@ -528,5 +535,34 @@ ul {
   }
 }
 
+.loader-wrapper {
+  position: relative;
+  width: 100%;
+
+  &:before {
+    content: "";
+	  display: block;
+    padding-top: 200px;
+  }
+}
+
+
+
+.loader {
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 

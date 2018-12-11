@@ -22,7 +22,7 @@ module.exports = {
   },
   entry: [
     './source/App.js',
-    './source/sass-style.scss',
+    './source/styles/sass-style.scss',
   ],
   output: {
     filename: './bundle.js',

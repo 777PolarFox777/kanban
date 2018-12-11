@@ -1,5 +1,14 @@
 import React from 'react';
+import '@babel/polyfill';
 import { render } from 'react-dom';
-import KanbanBoardContainer from './KanbanBoardContainer';
+import { Provider } from 'react-redux';
+import KanbanBoardContainer from './components/KanbanBoardContainer';
+import { store } from './store/initStore';
 
-render(<KanbanBoardContainer />, document.getElementById('root'));
+const app = (
+  <Provider store={store}>
+    <KanbanBoardContainer />
+  </Provider>
+);
+
+render(app, document.getElementById('root'));

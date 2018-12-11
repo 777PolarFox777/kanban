@@ -3,11 +3,11 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  color: white;
+  color: black;
 }
 
 body {
-	background: #1f253d;
+	background: linear-gradient(to bottom, #eee 0%, #ccc 50%, #eee 100%) fixed;
 	display: flex;
 }
 
@@ -39,7 +39,7 @@ a {
 	}
 
 h1, h2, p, span{
-	color: #fff;
+	color: black;
 }
 	.scnd-font-color {
 		color: #9099b7;
@@ -57,7 +57,7 @@ h1, h2, p, span{
 .button {
 	display: block;
 	width: 175px;
-	color: #1f253d;
+	color: black;
 	line-height: 50px;
 	font-size: 16px;
 	font-weight: 700;
@@ -78,7 +78,7 @@ h1, h2, p, span{
 		  flex-direction: column;
 		  justify-content: center;
 			margin-bottom: 25px;
-			background: #394264;
+			background: linear-gradient(to bottom, #adadad 0%, #ccc 50%, #496f6f 100%) fixed;
 			border-radius: 5px;
 			padding: 20px;
 			height:95vh;
@@ -117,12 +117,12 @@ h1, h2, p, span{
 }
 
 .left-column .menu li:hover{
-  background-color: #50597b;
+  background: linear-gradient(to bottom, #adadad 0%, #ccc 50%, #496f6f 100%) fixed;
   border: 1px solid #2196F3;
 }
 
 .left-column .menu li li:hover{
-  background-color: #394264;
+  background: linear-gradient(to bottom, #eee 0%, #a2a2a2 50%, #eee 100%) fixed;
   border: none;
 }
 

@@ -83,10 +83,17 @@ class KanbanBoard extends Component {
       showRegisterForm,
     } = this.state;
     const {
-      taskCallbacks, cards, user, changeUser,
+      taskCallbacks, cards, user, changeUser, isLoading,
     } = this.props;
     if (showCreateCard || showTutorial) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'auto';
+
+    if (isLoading) {
+      return (
+        <div className="loader" />
+      );
+    }
+
     return (
       <div className="app">
         <div className="header">
@@ -183,6 +190,7 @@ KanbanBoard.propTypes = {
   taskCallbacks: PropTypes.shape().isRequired,
   user: PropTypes.string,
   changeUser: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 KanbanBoard.defaultProps = {

@@ -54,6 +54,7 @@ const initRoutes = (app) => {
         .execute())
       .then(() => {
         res.json({ ok: '200' });
+        mysqlSession.close();
       })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
@@ -103,6 +104,7 @@ const initRoutes = (app) => {
         }))
       .then(() => {
         res.json({ cards: formedJson, user: username });
+        mysqlSession.close();
       })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
@@ -136,6 +138,7 @@ const initRoutes = (app) => {
         }))
       .then(() => {
         res.json({ id: req.body.cardId, ok: '200' });
+        mysqlSession.close();
       })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
@@ -155,6 +158,7 @@ const initRoutes = (app) => {
         .execute())
       .then(() => {
         res.json({ ok: '200' });
+        mysqlSession.close();
       })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
@@ -180,13 +184,14 @@ const initRoutes = (app) => {
           .execute((row) => {
             res.json({ id: row[0], ok: '200' });
           });
+        mysqlSession.close();
       })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
       });
   });
 
-  app.post('/deleteTask', ensureLogin.ensureLoggedIn(), (req) => {
+  app.post('/deleteTask', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
       .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
@@ -199,12 +204,16 @@ const initRoutes = (app) => {
         + `WHERE id = ${req.body.taskId}`)
           .execute();
       })
+      .then(() => {
+        res.json({ ok: '200' });
+        mysqlSession.close();
+      })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
       });
   });
 
-  app.post('/toggleTask', ensureLogin.ensureLoggedIn(), (req) => {
+  app.post('/toggleTask', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
       .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
@@ -221,6 +230,10 @@ const initRoutes = (app) => {
        + `status = "${req.body.status}" `
         + `WHERE id = ${req.body.cardId}`)
           .execute();
+      })
+      .then(() => {
+        res.json({ ok: '200' });
+        mysqlSession.close();
       })
       .catch((err) => {
         console.log(err); // eslint-disable-line no-console
