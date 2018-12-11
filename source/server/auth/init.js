@@ -12,6 +12,7 @@ const findUser = (username, callback) => {
     .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
     .then((session) => {
       mysqlSession = session;
+      console.log(session);
       session.sql(`USE ${process.env.DB_NAME}`).execute();
       return session.sql('SELECT * FROM users WHERE '
           + `username = "${username}"`)
