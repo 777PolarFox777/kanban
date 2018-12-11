@@ -104,6 +104,7 @@ const initRoutes = (app) => {
         }))
       .then(() => {
         res.json({ cards: formedJson, user: username });
+        console.log(formedJson);
         mysqlSession.close();
       })
       .catch((err) => {
