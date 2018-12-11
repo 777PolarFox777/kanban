@@ -28,7 +28,8 @@ class KanbanBoardContainerComponent extends Component {
   };
 
   changeUser = () => {
-
+    const { getCards: getCardsProp } = this.props;
+    getCardsProp();
   };
 
   render() {
