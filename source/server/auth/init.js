@@ -5,6 +5,7 @@ const mysqlx = require('@mysql/xdevapi');
 
 
 const findUser = (username, callback) => {
+  console.log('TRYING TO FIND USER');
   const user = { username: null, passwordHash: null };
   let mysqlSession;
   mysqlx
