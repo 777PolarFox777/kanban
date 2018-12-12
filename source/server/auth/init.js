@@ -5,21 +5,18 @@ const mysqlx = require('@mysql/xdevapi');
 
 
 const findUser = (username, callback) => {
-  console.log('TRYING TO FIND USER');
   const user = { username: null, passwordHash: null };
   let mysqlSession;
   mysqlx
-    .getSession(`${process.env.CLEARDB_DATABASE_URL}`)
+    .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
     .then((session) => {
       mysqlSession = session;
-      console.log(session);
       session.sql(`USE ${process.env.DB_NAME}`).execute();
       return session.sql('SELECT * FROM users WHERE '
           + `username = "${username}"`)
         .execute((row) => {
           user.username = row[1]; // eslint-disable-line prefer-destructuring
           user.passwordHash = row[2]; // eslint-disable-line prefer-destructuring
-          console.log(row);
         })
         .then(() => {
           if (username === user.username) {

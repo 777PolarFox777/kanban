@@ -10,7 +10,6 @@ const initRoutes = (app) => {
   app.post('/login',
     (req, res) => {
       passport.authenticate('local', (err, user) => {
-        console.log('IM IN POST LOGIN');
         if (err) {
           return res.json({ error: err });
         }
@@ -105,7 +104,6 @@ const initRoutes = (app) => {
         }))
       .then(() => {
         res.json({ cards: formedJson, user: username });
-        console.log(formedJson);
         mysqlSession.close();
       })
       .catch((err) => {
