@@ -9,7 +9,7 @@ const findUser = (username, callback) => {
   let mysqlSession;
   console.log(username);
   mysqlx
-    .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+    .getSession(process.env.JAWSDB_URL)
     .then((session) => {
       console.log(session);
       mysqlSession = session;
