@@ -48,7 +48,7 @@ const initRoutes = (app) => {
     const salt = bcrypt.genSaltSync(saltRounds);
     const passwordHash = bcrypt.hashSync(myPlaintextPassword, salt);
     mysqlx
-      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .getSession(process.env.CLEARDB_DATABASE_URL)
       .then((mySession) => {
         mysqlSession = mySession;
       })
@@ -76,7 +76,7 @@ const initRoutes = (app) => {
     const { username } = req.user;
     let mysqlSession;
     mysqlx
-      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .getSession(process.env.CLEARDB_DATABASE_URL)
       .then((mySession) => {
         mysqlSession = mySession;
       })
@@ -119,7 +119,7 @@ const initRoutes = (app) => {
   app.post('/createCard', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
-      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .getSession(process.env.CLEARDB_DATABASE_URL)
       .then((mySession) => {
         mysqlSession = mySession;
       })
@@ -153,7 +153,7 @@ const initRoutes = (app) => {
   app.post('/deleteCard', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
-      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .getSession(process.env.CLEARDB_DATABASE_URL)
       .then((mySession) => {
         mysqlSession = mySession;
       })
@@ -173,7 +173,7 @@ const initRoutes = (app) => {
   app.post('/addTask', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
-      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .getSession(process.env.CLEARDB_DATABASE_URL)
       .then((mySession) => {
         mysqlSession = mySession;
       })
@@ -199,7 +199,7 @@ const initRoutes = (app) => {
   app.post('/deleteTask', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
-      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .getSession(process.env.CLEARDB_DATABASE_URL)
       .then((mySession) => {
         mysqlSession = mySession;
       })
@@ -221,7 +221,7 @@ const initRoutes = (app) => {
   app.post('/toggleTask', ensureLogin.ensureLoggedIn(), (req, res) => {
     let mysqlSession;
     mysqlx
-      .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
+      .getSession(process.env.CLEARDB_DATABASE_URL)
       .then((mySession) => {
         mysqlSession = mySession;
       })
