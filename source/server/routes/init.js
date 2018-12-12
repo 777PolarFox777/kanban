@@ -11,15 +11,18 @@ const initRoutes = (app) => {
     (req, res) => {
       passport.authenticate('local', (err, user) => {
         if (err) {
+          console.log(err);
           return res.json({ error: err });
         }
         if (!user) {
+          console.log(err);
           return res.json({ error: 'No such user!' });
         }
         req.logIn(user, (errc) => {
           if (errc) {
             return res.json({ error: err });
           }
+          console.log(req.user);
           return res.json({ user: req.user.username });
         });
         return null;
@@ -27,6 +30,7 @@ const initRoutes = (app) => {
     });
 
   app.get('/login', (req, res) => {
+    console.log('GET LOGIN');
     res.redirect('/');
   });
 
@@ -62,6 +66,7 @@ const initRoutes = (app) => {
   });
 
   app.get('/', (req, res) => {
+    console.log('GET /');
     res.sendFile(path.join(baseDir, 'index.html'));
   });
 
