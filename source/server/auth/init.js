@@ -7,9 +7,11 @@ const mysqlx = require('@mysql/xdevapi');
 const findUser = (username, callback) => {
   const user = { username: null, passwordHash: null };
   let mysqlSession;
+  console.log(username);
   mysqlx
     .getSession(`${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}`)
     .then((session) => {
+      console.log(session);
       mysqlSession = session;
       session.sql(`USE ${process.env.DB_NAME}`).execute();
       return session.sql('SELECT * FROM users WHERE '
