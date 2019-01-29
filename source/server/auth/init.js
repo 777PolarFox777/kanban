@@ -1,36 +1,24 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-const mysqlx = require('@mysql/xdevapi');
+const mysql = require('mysql');
 
+const connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
 
 const findUser = (username, callback) => {
   const user = { username: null, passwordHash: null };
-  let mysqlSession;
-  console.log(username);
-  mysqlx
-    .getSession(process.env.CLEARDB_DATABASE_URL)
-    .then((session) => {
-      console.log(session);
-      mysqlSession = session;
-      session.sql(`USE ${process.env.DB_NAME}`).execute();
-      return session.sql('SELECT * FROM users WHERE '
-          + `username = "${username}"`)
-        .execute((row) => {
-          user.username = row[1]; // eslint-disable-line prefer-destructuring
-          user.passwordHash = row[2]; // eslint-disable-line prefer-destructuring
-        })
-        .then(() => {
-          if (username === user.username) {
-            return callback(null, user);
-          }
-          return callback(null);
-        });
-    })
-    .then(() => mysqlSession.close())
-    .catch((err) => {
-      callback(err);
-    });
+  connection.query('SELECT * FROM users WHERE '
+          + `username = "${username}"`, (error, result) => {
+    if (error) callback(error);
+
+    user.username = result[0].username; // eslint-disable-line prefer-destructuring
+    user.passwordHash = result[0].password; // eslint-disable-line prefer-destructuring
+
+    if (username === user.username) {
+      return callback(null, user);
+    }
+    return callback(null);
+  });
 };
 
 passport.serializeUser((user, cb) => {
