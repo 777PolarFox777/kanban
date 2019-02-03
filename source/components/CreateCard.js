@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 
 class CreateCard extends Component {
   constructor(props) {
@@ -41,10 +42,9 @@ class CreateCard extends Component {
     const { isValid, titleIn, descIn } = this.state;
     return (
       <div className="create-card">
-        {!isValid && <div style={{ margin: `${0} auto`, color: 'red', width: `${200}px` }}>INCORECT DATA</div>}
+        {!isValid && <div>INCORECT DATA</div>}
         <label className="create-label" htmlFor="title-input">
-          <h1>Input card title</h1>
-          <br />
+          <h4>Input card title</h4>
           <input
             className={`create-input ${isValid ? '' : 'invalid'}`}
             name="titleIn"
@@ -56,8 +56,7 @@ class CreateCard extends Component {
         </label>
 
         <label className="create-label" htmlFor="description-input">
-          <h1>Input card description</h1>
-          <br />
+          <h4>Input card description</h4>
           <input
             className={`create-input ${isValid ? '' : 'invalid'}`}
             name="descIn"
@@ -68,7 +67,15 @@ class CreateCard extends Component {
           />
         </label>
 
-        <button onClick={this.handleButton} className="create-submit" type="button">CREATE</button>
+        <Button
+          bsStyle="primary"
+          bsSize="small"
+          onClick={this.handleButton}
+          className="create-submit"
+          type="button"
+        >
+        CREATE
+        </Button>
       </div>
     );
   }

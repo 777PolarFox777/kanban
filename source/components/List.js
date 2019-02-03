@@ -2,9 +2,11 @@
  * Created by Andrew on 14.09.2018.
  */
 import React from 'react';
+import {
+  Button, Glyphicon, OverlayTrigger, Tooltip,
+} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Card from './Card';
-import Tooltip from './Tooltip';
 
 const List = (props) => {
   const { taskCallbacks, title, toggleModal } = props;
@@ -24,19 +26,34 @@ const List = (props) => {
         taskCallbacks={taskCallbacks}
       />);
   });
+
+  const tooltip = (
+    <Tooltip id="tooltip">
+      Click here to create new card!
+    </Tooltip>
+  );
+
   return (
     <div className="list">
-      <h1 style={{ width: `${150}px`, display: 'inline-block' }}>{title}</h1>
-      <Tooltip label="Click here to create new card!">
-        <button
-          type="button"
-          className="plus"
-          onClick={(ev) => {
-            ev.preventDefault();
-            toggleModal();
-          }}
-        />
-      </Tooltip>
+      <div className="list-title">
+        <h1>{title}</h1>
+        <div className="list-add-button">
+          <OverlayTrigger placement="top" overlay={tooltip}>
+            <Button
+              bsStyle="success"
+              className="no-border-button"
+              bsSize="small"
+              type="button"
+              onClick={(ev) => {
+                ev.preventDefault();
+                toggleModal();
+              }}
+            >
+              <Glyphicon glyph="plus" />
+            </Button>
+          </OverlayTrigger>
+        </div>
+      </div>
       {cards}
     </div>
   );

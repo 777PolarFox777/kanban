@@ -3,8 +3,11 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import {
+  Button, Glyphicon, PageHeader, Modal,
+} from 'react-bootstrap';
+import { RingLoader } from 'react-spinners';
 import List from './List';
-import Modal from './Modal';
 import CreateCard from './CreateCard';
 import Tutorial from './Tutorial';
 import LoginForm from './LoginForm';
@@ -24,19 +27,8 @@ class KanbanBoard extends Component {
       showTutorial: false,
       showLoginForm: false,
       showRegisterForm: false,
-      svgContent: null,
     };
   }
-
-  componentDidMount() {
-    this.getSvg();
-  }
-
-  getSvg = () => {
-    fetch('images/help.svg')
-      .then(response => response.text())
-      .then(svg => this.setState({ svgContent: svg }));
-  };
 
   handleToggleModal = (modalEv) => {
     const {
@@ -79,108 +71,150 @@ class KanbanBoard extends Component {
       status,
       showTutorial,
       showLoginForm,
-      svgContent,
       showRegisterForm,
     } = this.state;
+
     const {
       taskCallbacks, cards, user, changeUser, isLoading,
     } = this.props;
+
     if (showCreateCard || showTutorial) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'auto';
 
     if (isLoading) {
       return (
-        <div className="loader" />
+        <div className="global-loader">
+          <RingLoader size={200} color="#2196F3" />
+        </div>
       );
     }
 
     return (
       <div className="app">
         <div className="header">
-          <h1>KANBAN BOARD APPLICATION</h1>
+          <PageHeader>KANBAN BOARD APPLICATION</PageHeader>
           <div className="auth">
             {user
               ? (
                 <div className="user-field">
                   <span>{`Welcome, ${user}!`}</span>
                   <span>|</span>
-                  <button type="button" onClick={this.handleLogOut}>Log out</button>
+                  <Button
+                    bsStyle="warning"
+                    bsSize="small"
+                    className="logout-button"
+                    type="button"
+                    onClick={this.handleLogOut}
+                  >
+                    Log out
+                  </Button>
                 </div>
               ) : (
                 <div className="login-filed">
-                  <button type="button" onClick={() => this.handleToggleModal({ name: 'login' })}>Log in</button>
+                  <Button
+                    bsStyle="default"
+                    bsSize="small"
+                    type="button"
+                    onClick={() => this.handleToggleModal({ name: 'login' })}
+                  >
+                    Log in
+                  </Button>
                   <span>|</span>
-                  <button type="button" onClick={() => this.handleToggleModal({ name: 'register' })}>Register</button>
+                  <Button
+                    bsStyle="default"
+                    bsSize="small"
+                    type="button"
+                    onClick={() => this.handleToggleModal({ name: 'register' })}
+                  >
+                    Register
+                  </Button>
                 </div>
               )
             }
             <span>|</span>
-            {/* eslint-disable-next-line react/no-danger */}
-            <button type="button" onClick={() => this.handleToggleModal({ name: 'tutorial' })} dangerouslySetInnerHTML={{ __html: svgContent }} />
+            <Button
+              bsStyle="info"
+              className="no-border-button question-button"
+              bsSize="small"
+              type="button"
+              onClick={() => this.handleToggleModal({ name: 'tutorial' })}
+            >
+              <Glyphicon glyph="question-sign" />
+            </Button>
           </div>
         </div>
-        <List
-          toggleModal={() => this.handleToggleModal({
-            status: 'todo',
-            name: 'createCard',
-          })}
-          taskCallbacks={taskCallbacks}
-          id="todo"
-          title="To Do"
-          cards={cards.filter(card => card.status === 'todo')}
-        />
-        <List
-          toggleModal={() => this.handleToggleModal({
-            status: 'in-progress',
-            name: 'createCard',
-          })}
-          taskCallbacks={taskCallbacks}
-          id="in-progress"
-          title="In Progress"
-          cards={cards.filter(card => card.status === 'in-progress')}
-        />
-        <List
-          toggleModal={() => this.handleToggleModal({
-            status: 'done',
-            name: 'createCard',
-          })}
-          taskCallbacks={taskCallbacks}
-          id="done"
-          title="Done"
-          cards={cards.filter(card => card.status === 'done')}
-        />
-        {showCreateCard
-                && (
-                  <Modal onCloseRequest={() => this.handleToggleModal({ status, name: 'createCard' })}>
-                    <CreateCard toggleModal={(title, desc) => {
-                      taskCallbacks.createCard(title, desc, status);
-                      this.handleToggleModal({ status, name: 'createCard' });
-                    }}
-                    />
-                  </Modal>
-                )
-        }
-        {showTutorial
-        && (
-          <Modal onCloseRequest={() => this.handleToggleModal({ name: 'tutorial' })}>
+        <div className="list-container">
+          <List
+            toggleModal={() => this.handleToggleModal({
+              status: 'todo',
+              name: 'createCard',
+            })}
+            taskCallbacks={taskCallbacks}
+            id="todo"
+            title="To Do"
+            cards={cards.filter(card => card.status === 'todo')}
+          />
+          <List
+            toggleModal={() => this.handleToggleModal({
+              status: 'in-progress',
+              name: 'createCard',
+            })}
+            taskCallbacks={taskCallbacks}
+            id="in-progress"
+            title="In Progress"
+            cards={cards.filter(card => card.status === 'in-progress')}
+          />
+          <List
+            toggleModal={() => this.handleToggleModal({
+              status: 'done',
+              name: 'createCard',
+            })}
+            taskCallbacks={taskCallbacks}
+            id="done"
+            title="Done"
+            cards={cards.filter(card => card.status === 'done')}
+          />
+        </div>
+
+        <Modal show={showCreateCard} onHide={() => this.handleToggleModal({ status, name: 'createCard' })}>
+          <Modal.Header closeButton>
+            <Modal.Title>Create new card</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <CreateCard toggleModal={(title, desc) => {
+              taskCallbacks.createCard(title, desc, status);
+              this.handleToggleModal({ status, name: 'createCard' });
+            }}
+            />
+          </Modal.Body>
+        </Modal>
+
+        <Modal show={showTutorial} onHide={() => this.handleToggleModal({ name: 'tutorial' })}>
+          <Modal.Header closeButton>
+            <Modal.Title>Create new card</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <Tutorial toggleModal={() => this.handleToggleModal({ name: 'tutorial' })} />
-          </Modal>
-        )
-        }
-        {showRegisterForm
-        && (
-          <Modal onCloseRequest={() => this.handleToggleModal({ name: 'register' })}>
+          </Modal.Body>
+        </Modal>
+
+        <Modal show={showRegisterForm} onHide={() => this.handleToggleModal({ name: 'register' })}>
+          <Modal.Header closeButton>
+            <Modal.Title>Create new card</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <RegistrationForm toggleModal={() => this.handleToggleModal({ name: 'register' })} changeUser={changeUser} />
-          </Modal>
-        )
-        }
-        {showLoginForm
-        && (
-          <Modal onCloseRequest={() => this.handleToggleModal({ name: 'login' })}>
+          </Modal.Body>
+        </Modal>
+
+        <Modal show={showLoginForm} onHide={() => this.handleToggleModal({ name: 'login' })}>
+          <Modal.Header closeButton>
+            <Modal.Title>Create new card</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <LoginForm toggleModal={() => this.handleToggleModal({ name: 'login' })} changeUser={changeUser} />
-          </Modal>
-        )
-        }
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }

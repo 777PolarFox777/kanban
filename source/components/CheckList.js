@@ -3,8 +3,11 @@
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { PulseLoader } from 'react-spinners';
 import { connect } from 'react-redux';
-import Tooltip from './Tooltip';
+import {
+  Button, Glyphicon, OverlayTrigger, Tooltip,
+} from 'react-bootstrap';
 import { putTask, removeTaskFromServer, toggleTask } from '../store/kanbanBoardContainer/actions';
 
 class CheckListComponent extends Component {
@@ -51,30 +54,44 @@ class CheckListComponent extends Component {
     if (isLoading && cardId === componentId) {
       return (
         <div className="loader-wrapper">
-          <div className="loader" />
+          <PulseLoader size={15} margin="10px" color="#2196F3" />
         </div>
       );
     }
 
     const tasks = tasksProp.map((task, taskIndex) => (
-      <li key={task.id} className="checklist__task">
-        <label className="container" htmlFor={`checkbox${cardId}${task.id}`}>
-          {task.name}
-          <input
-            type="checkbox"
-            id={`checkbox${cardId}${task.id}`}
-            defaultChecked={task.done}
-            onChange={() => this.toggleTask(cardId, task.id, taskIndex)}
-          />
-          <span className="checkmark" />
-        </label>
-        <Tooltip label="Click here to remove this task!">
-          <button
+      <li key={task.id} className="checklist-task">
+        <label className="container" htmlFor={`checkbox${cardId}${task.id}`} onClick={() => this.toggleTask(cardId, task.id, taskIndex)}>
+          <Button
+            bsStyle="default"
+            className={`no-border-button check-button ${task.done ? '' : 'unchecked'}`}
+            bsSize="small"
             type="button"
-            className="checklist__task--remove cross"
+            onClick={() => this.toggleTask(cardId, task.id, taskIndex)}
+          >
+            <Glyphicon glyph="ok" className="checkmark" />
+          </Button>
+          {task.name}
+          <input />
+        </label>
+        <OverlayTrigger
+          placement="top"
+          overlay={(
+            <Tooltip id={`tooltip-${cardId}${task.id}`}>
+              Click here to remove this task!
+            </Tooltip>
+          )}
+        >
+          <Button
+            bsStyle="danger"
+            className="no-border-button checklist-task-remove"
+            bsSize="small"
+            type="button"
             onClick={() => this.deleteTask(cardId, task.id, taskIndex)}
-          />
-        </Tooltip>
+          >
+            <Glyphicon glyph="remove" />
+          </Button>
+        </OverlayTrigger>
       </li>
     ));
     return (
@@ -83,7 +100,7 @@ class CheckListComponent extends Component {
         <input
           value={value}
           type="text"
-          className="checklist--add-task"
+          className="checklist-add-task"
           placeholder="Type then hit Enter to add a task"
           onChange={this.handleChange}
           onKeyPress={this.checkInputKeyPress}

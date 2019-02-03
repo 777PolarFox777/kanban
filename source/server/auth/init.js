@@ -3,16 +3,20 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const mysql = require('mysql');
 
-const connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
-
 const findUser = (username, callback) => {
   const user = { username: null, passwordHash: null };
+  const connection = mysql.createConnection(process.env.CLEARDB_DATABASE_URL);
+
   connection.query('SELECT * FROM users WHERE '
           + `username = "${username}"`, (error, result) => {
     if (error) callback(error);
 
-    user.username = result[0].username; // eslint-disable-line prefer-destructuring
-    user.passwordHash = result[0].password; // eslint-disable-line prefer-destructuring
+    if (result) {
+      user.passwordHash = result[0].password;
+      user.username = result[0].username;
+    }
+
+    connection.end();
 
     if (username === user.username) {
       return callback(null, user);

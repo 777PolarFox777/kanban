@@ -5,8 +5,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import marked from 'marked';
 import { Transition } from 'react-transition-group';
+import {
+  Button, Glyphicon, OverlayTrigger, Tooltip,
+} from 'react-bootstrap';
 import CheckList from './CheckList';
-import Tooltip from './Tooltip';
 
 class Card extends Component {
   constructor(props) {
@@ -28,47 +30,49 @@ class Card extends Component {
       id,
       tasks,
       taskCallbacks,
-      color,
+      // color,
       title,
     } = this.props;
-    const sideColor = {
-      position: 'absolute',
-      zIndex: -1,
-      top: 0,
-      bottom: 0,
-      left: 0,
-      width: 7,
-      backgroundColor: color,
-    };
+    // const sideColor = {
+    //   position: 'absolute',
+    //   zIndex: -1,
+    //   top: 0,
+    //   bottom: 0,
+    //   left: 0,
+    //   width: 7,
+    //   backgroundColor: color,
+    // };
+
+    const tooltip = (
+      <Tooltip id="tooltip">
+      Click here to delete this card!
+      </Tooltip>
+    );
 
     return (
       <div className="card">
-        <div style={sideColor} />
+        <div />
         <div
           className={
-            showDetails ? 'card__title card__title--is-open' : 'card__title'
+            showDetails ? 'card-title card-title-is-open' : 'card-title'
           }
         >
-          <div // eslint-disable-line jsx-a11y/interactive-supports-focus
+          <Button
             role="button"
-            className="card_button"
+            className="card-button"
             onClick={this.toggleDetails}
-          />
+          >
+            <Glyphicon glyph={showDetails ? 'triangle-bottom' : 'triangle-right'} />
+          </Button>
           <div
-            className="title_container"
-            style={{ display: 'inline' }}
+            className="title-container"
             onDoubleClick={(ev) => {
               if (ev.target.localName !== 'input') {
                 const input = document.createElement('input');
                 input.value = title;
-                input.style.width = '150px';
-                input.style.fontWeight = 'bold';
-                input.style.fontSize = '18px';
                 input.onblur = (evb) => {
                   const div = document.createElement('div');
                   div.innerHTML = evb.currentTarget.value;
-                  div.style.width = '150px';
-                  div.style.display = 'inline';
                   try {
                     evb.currentTarget.parentNode.replaceChild(div, evb.currentTarget);
                   } catch (e) {
@@ -85,43 +89,33 @@ class Card extends Component {
               }
             }}
           >
-            <div
-              style={{ display: 'inline' }}
+            <h3
               className="title"
             >
               {title}
-            </div>
+            </h3>
           </div>
-          {showDetails ? (
-            <Tooltip label="Click here to delete this card!">
-              <button
-                type="button"
-                className="cross"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  taskCallbacks.deleteCard(id);
-                }}
-              />
-            </Tooltip>
-          )
-            : (
-              <button
-                type="button"
-                className="cross"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  taskCallbacks.deleteCard(id);
-                }}
-              />
-            )
-          }
+          <OverlayTrigger placement="top" overlay={tooltip}>
+            <Button
+              bsStyle="danger"
+              className="no-border-button"
+              bsSize="small"
+              type="button"
+              onClick={(ev) => {
+                ev.preventDefault();
+                taskCallbacks.deleteCard(id);
+              }}
+            >
+              <Glyphicon glyph="remove" />
+            </Button>
+          </OverlayTrigger>
         </div>
         <Transition in={showDetails} timeout={500}>
           {(state) => {
             switch (state) {
             case 'entering':
               return (
-                <div className="card__details slider slider-opened">
+                <div className="card-details slider slider-opened">
                   {/* eslint-disable-next-line react/no-danger */}
                   <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
                   <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
@@ -129,7 +123,7 @@ class Card extends Component {
               );
             case 'entered':
               return (
-                <div className="card__details slider slider-opened">
+                <div className="card-details slider slider-opened">
                   {/* eslint-disable-next-line react/no-danger */}
                   <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
                   <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
@@ -137,7 +131,7 @@ class Card extends Component {
               );
             case 'exiting':
               return (
-                <div className="card__details slider slider-closed">
+                <div className="card-details slider slider-closed">
                   {/* eslint-disable-next-line react/no-danger */}
                   <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
                   <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
@@ -145,7 +139,7 @@ class Card extends Component {
               );
             case 'exited':
               return (
-                <div className="card__details slider slider-closed">
+                <div className="card-details slider slider-closed">
                   {/* eslint-disable-next-line react/no-danger */}
                   <span dangerouslySetInnerHTML={{ __html: marked(description) }} />
                   <CheckList cardId={id} tasks={tasks} taskCallbacks={taskCallbacks} />
