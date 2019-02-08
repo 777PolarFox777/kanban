@@ -30,18 +30,20 @@ class Card extends Component {
       id,
       tasks,
       taskCallbacks,
-      // color,
+      color,
       title,
     } = this.props;
-    // const sideColor = {
-    //   position: 'absolute',
-    //   zIndex: -1,
-    //   top: 0,
-    //   bottom: 0,
-    //   left: 0,
-    //   width: 7,
-    //   backgroundColor: color,
-    // };
+
+    const sideColor = {
+      position: 'absolute',
+      zIndex: -1,
+      top: 0,
+      bottom: 0,
+      left: -7,
+      width: 7,
+      backgroundColor: color,
+      borderRadius: '5px 0 0 5px',
+    };
 
     const tooltip = (
       <Tooltip id="tooltip">
@@ -51,7 +53,7 @@ class Card extends Component {
 
     return (
       <div className="card">
-        <div />
+        <div style={sideColor} />
         <div
           className={
             showDetails ? 'card-title card-title-is-open' : 'card-title'

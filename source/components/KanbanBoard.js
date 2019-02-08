@@ -191,7 +191,7 @@ class KanbanBoard extends Component {
 
         <Modal show={showTutorial} onHide={() => this.handleToggleModal({ name: 'tutorial' })}>
           <Modal.Header closeButton>
-            <Modal.Title>Create new card</Modal.Title>
+            <Modal.Title>Tutorial</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Tutorial toggleModal={() => this.handleToggleModal({ name: 'tutorial' })} />
@@ -200,7 +200,7 @@ class KanbanBoard extends Component {
 
         <Modal show={showRegisterForm} onHide={() => this.handleToggleModal({ name: 'register' })}>
           <Modal.Header closeButton>
-            <Modal.Title>Create new card</Modal.Title>
+            <Modal.Title>Registration Form</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <RegistrationForm toggleModal={() => this.handleToggleModal({ name: 'register' })} changeUser={changeUser} />
@@ -209,7 +209,7 @@ class KanbanBoard extends Component {
 
         <Modal show={showLoginForm} onHide={() => this.handleToggleModal({ name: 'login' })}>
           <Modal.Header closeButton>
-            <Modal.Title>Create new card</Modal.Title>
+            <Modal.Title>Login Form</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <LoginForm toggleModal={() => this.handleToggleModal({ name: 'login' })} changeUser={changeUser} />

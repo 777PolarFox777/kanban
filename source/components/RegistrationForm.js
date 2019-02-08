@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 
 const API_HEADERS = {
   'Content-Type': 'application/json',
@@ -92,20 +93,29 @@ class RegistrationForm extends Component {
           <span className="error-message">{error}</span>
         )
         }
-        <form onSubmit={this.handleRegister} className="form-container registration">
-          <label htmlFor="user-input">
-            {'USERNAME:'}
-            <input id="user-input" name="username" className={isValid ? '' : 'invalid'} placeholder="Type login here" value={username} onChange={this.loginOnChange} />
-          </label>
-          <label htmlFor="password-input">
-            {'PASSWORD:'}
-            <input id="password-input" type="password" name="password" className={isValid ? '' : 'invalid'} value={password} onChange={this.passwordOnChange} />
-          </label>
-          <label htmlFor="confirm-password-input">
-            {'CONFIRM PASSWORD:'}
-            <input id="confirm-password-input" type="password" name="confirm-password" className={isValid ? '' : 'invalid'} value={confirmPassword} onChange={this.confirmPasswordOnChange} />
-          </label>
-          <input type="submit" value="REGISTER" />
+        <form onSubmit={this.handleRegister} className="form-container">
+          <div className="register">
+            <label htmlFor="user-input">
+              {'USERNAME:'}
+              <input id="user-input" name="username" className={isValid ? '' : 'invalid'} value={username} onChange={this.loginOnChange} />
+            </label>
+            <label htmlFor="password-input">
+              {'PASSWORD:'}
+              <input id="password-input" type="password" name="password" className={isValid ? '' : 'invalid'} value={password} onChange={this.passwordOnChange} />
+            </label>
+            <label htmlFor="confirm-password-input">
+              {'CONFIRM PASSWORD:'}
+              <input id="confirm-password-input" type="password" name="confirm-password" className={isValid ? '' : 'invalid'} value={confirmPassword} onChange={this.confirmPasswordOnChange} />
+            </label>
+            <Button
+              bsStyle="success"
+              className="no-border-button"
+              bsSize="small"
+              type="submit"
+            >
+            REGISTER
+            </Button>
+          </div>
         </form>
       </div>
     );

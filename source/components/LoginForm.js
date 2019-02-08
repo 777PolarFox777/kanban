@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 
 const API_HEADERS = {
   'Content-Type': 'application/json',
@@ -71,7 +72,14 @@ class LoginForm extends Component {
             {'PASSWORD:'}
             <input id="password-input" type="password" name="password" className={isValid ? '' : 'invalid'} value={password} onChange={this.passwordOnChange} />
           </label>
-          <input type="submit" value="LOGIN" />
+          <Button
+            bsStyle="success"
+            className="no-border-button"
+            bsSize="small"
+            type="submit"
+          >
+          LOGIN
+          </Button>
         </form>
       </div>
     );

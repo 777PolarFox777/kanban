@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 
 class Tutorial extends Component {
   constructor(props) {
@@ -29,8 +30,24 @@ class Tutorial extends Component {
             <p>App was created by Andrew D.</p>
             <p>Would you like to pass a tutorial?</p>
             <div className="button-container">
-              <button type="button" className="button tutorial" onClick={this.nextStep}>Yep</button>
-              <button type="button" className="button" onClick={toggleModal}>Not this time</button>
+              <Button
+                bsStyle="primary"
+                className="no-border-button"
+                bsSize="small"
+                type="button"
+                onClick={this.nextStep}
+              >
+              Yep
+              </Button>
+              <Button
+                bsStyle="primary"
+                className="no-border-button"
+                bsSize="small"
+                type="button"
+                onClick={toggleModal}
+              >
+              Not this time
+              </Button>
             </div>
           </div>
         )
@@ -57,7 +74,15 @@ class Tutorial extends Component {
               {'And cards with finished tasks are placed in last column.'}
             </p>
             <img src="/images/done.png" alt="done" />
-            <button type="button" className="button tutorial" onClick={this.nextStep}>I understand</button>
+            <Button
+              bsStyle="primary"
+              className="no-border-button"
+              bsSize="small"
+              type="button"
+              onClick={this.nextStep}
+            >
+            I understand
+            </Button>
           </div>
         )
         }
@@ -79,7 +104,15 @@ class Tutorial extends Component {
               <p>
                 {'After that, click Create button to add new card.'}
               </p>
-              <button type="button" className="button tutorial" onClick={this.nextStep}>I understand</button>
+              <Button
+                bsStyle="primary"
+                className="no-border-button"
+                bsSize="small"
+                type="button"
+                onClick={this.nextStep}
+              >
+              I understand
+              </Button>
             </div>
           )
         }
@@ -101,7 +134,15 @@ class Tutorial extends Component {
                 {'To add new task just put task name to input at the bottom of a card and press Enter.'}
               </p>
               <img src="/images/input.png" alt="input" />
-              <button type="button" className="button tutorial" onClick={this.nextStep}>I understand</button>
+              <Button
+                bsStyle="primary"
+                className="no-border-button"
+                bsSize="small"
+                type="button"
+                onClick={this.nextStep}
+              >
+              I understand
+              </Button>
             </div>
           )
         }
@@ -115,7 +156,15 @@ class Tutorial extends Component {
               <p>
                 {'Now you should try it yourself!'}
               </p>
-              <button type="button" className="button tutorial" onClick={toggleModal}>{'Let\'s go!'}</button>
+              <Button
+                bsStyle="primary"
+                className="no-border-button"
+                bsSize="small"
+                type="button"
+                onClick={toggleModal}
+              >
+              I understand
+              </Button>
             </div>
           )
         }
