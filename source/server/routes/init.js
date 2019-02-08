@@ -204,6 +204,10 @@ const initRoutes = (app) => {
   app.get('/docs-style.css', (req, res) => {
     res.sendFile(path.join(baseDir, '/docs-style.css'));
   });
+
+  app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(baseDir, '/source/images/favicon.ico'));
+  });
 };
 
 module.exports = initRoutes;
